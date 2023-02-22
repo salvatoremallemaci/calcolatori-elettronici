@@ -1,0 +1,41 @@
+			.data
+
+tabella:	.word salto1, salto2, salto3	
+			# ogni etichetta occupa 4 byte
+			
+			.text
+			.globl main
+			.ent main
+			
+main:		
+			
+			# versione con tante beq : poco efficiente per molti rami
+			# uso un vettore di salto
+			
+			# codice che calcola un valore in $t0
+			li $t0, 3
+			
+			#beq $t0, 1, salto1
+			#beq $t0, 2, salto2
+			#beq $t0, 3, salto3
+			
+			addi $t0, $t0, -1		# ho 3 etichette -> 0 1 2 come indici di accesso
+			sll $t0, $t0, 2			# moltiplico per 4, poichè ogni etichetta occupa 4 byte
+			lw $t1, tabella($t0)
+			jr $t1
+			
+	
+salto1:		# codice
+			j fine
+			
+salto2:		# codice
+			j fine
+
+salto3:		# codice
+			j fine
+
+fine:					
+			
+			li $v0, 10
+			syscall
+			.end main
